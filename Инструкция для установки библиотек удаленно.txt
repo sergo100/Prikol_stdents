@@ -1,0 +1,1 @@
+cmd.exe /c start cmd.exe /k "py -m pip install pillow || pip install pip"
