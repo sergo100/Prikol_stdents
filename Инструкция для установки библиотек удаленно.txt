@@ -1,1 +1,8 @@
+1. Удаленно обновите pip install
+
+cmd.exe /c start cmd.exe /k "py -m pip install --upgrade pip"
+
+
+2. установка библиотек
+замените pillow на любую другую библиотеку
 cmd.exe /c start cmd.exe /k "py -m pip install pillow || pip install pip"

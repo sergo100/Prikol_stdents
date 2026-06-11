@@ -1,1 +1,1 @@
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "python 'C:\Users\student\back_to_future.py'"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "python 'C:\Users\student\skynet2.py'"

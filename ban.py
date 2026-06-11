@@ -76,5 +76,22 @@ understand_button = tk.Button(
 )
 understand_button.pack(side=tk.LEFT, padx=15)
 
+# Кнопка "Прийти на пересдачу"
+understand_button = tk.Button(
+    buttons_frame, 
+    text="Прийти на пересдачу", 
+    command=close_program, 
+    font=("Arial", 14, "bold"), 
+    bg="#0A9146", 
+    fg="white", 
+    activebackground="#2C1FA1", 
+    activeforeground="white", 
+    padx=30, 
+    pady=10, 
+    bd=0, 
+    cursor="hand2"
+)
+understand_button.pack(side=tk.BOTTOM, padx=15)
+
 # Запуск отображения окна
 root.mainloop()
