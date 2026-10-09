@@ -3,9 +3,8 @@ import sys
 import os
 from PIL import Image, ImageTk
 
-# Укажите путь к вашей страшной картинке
-# Положите файл в ту же папку, где лежит этот скрипт
-SCREAMER_IMAGE_PATH = "screamer.png" 
+# Настройки путей к файлам (положите картинку скримера в папку со скриптом)
+SCREAMER_IMAGE_PATH = "screamer.png"
 
 # Создание главного окна
 root = tk.Tk()
@@ -15,40 +14,78 @@ root.title("Система блокировки")
 root.attributes("-fullscreen", True)
 root.configure(bg="#1a1a1a")  # Темный фон
 
-# Главный контейнер для центрирования всех элементов
+# Главный контейнер для центрирования всех элементов начального экрана
 frame = tk.Frame(root, bg="#1a1a1a")
 frame.place(relx=0.5, rely=0.5, anchor="center")
 
-# Функция, которая активирует скример при нажатии на кнопку
+# Глобальная переменная для управления слоем экрана розыгрыша
+current_screamer_layer = None
+
+# Функция, которая активирует скример при нажатии на любую кнопку
 def trigger_screamer():
-    # 1. Удаляем текст и кнопки с экрана
+    global current_screamer_layer
+    
+    # 1. Полностью удаляем текст и кнопки начального экрана
     frame.destroy()
     
     # 2. Выводим картинку скримера на весь экран
     if os.path.exists(SCREAMER_IMAGE_PATH):
-        # Получаем размеры текущего экрана
         screen_width = root.winfo_screenwidth()
         screen_height = root.winfo_screenheight()
         
-        # Открываем изображение и растягиваем под размер монитора
         img = Image.open(SCREAMER_IMAGE_PATH)
         img = img.resize((screen_width, screen_height), Image.Resampling.LANCZOS)
         
-        # Сохраняем ссылку в global, чтобы картинка не исчезла из памяти
-        global photo
-        photo = ImageTk.PhotoImage(img)
+        global photo_screamer
+        photo_screamer = ImageTk.PhotoImage(img)
         
-        # Создаем слой для картинки
-        screamer_label = tk.Label(root, image=photo, bg="black")
-        screamer_label.pack(fill="both", expand=True)
+        current_screamer_layer = tk.Label(root, image=photo_screamer, bg="black")
+        current_screamer_layer.pack(fill="both", expand=True)
     else:
-        # Запасной вариант, если файла картинки нет в папке
-        root.configure(bg="#ff0000")
-        fail_label = tk.Label(root, text="БУ!", font=("Arial", 96, "bold"), fg="black", bg="#ff0000")
-        fail_label.place(relx=0.5, rely=0.5, anchor="center")
+        # Запасной текстовый вариант, если картинки скримера нет
+        current_screamer_layer = tk.Label(root, text="БУ!", font=("Arial", 96, "bold"), fg="black", bg="#ff0000")
+        current_screamer_layer.pack(fill="both", expand=True)
 
-    # 3. Закрываем программу автоматически через 3 секунды
-    root.after(3000, close_program)
+    # 3. Через 2 секунды (2000 мс) убираем скример и показываем мем
+    root.after(2000, trigger_robert_weide)
+
+# Функция, которая выводит текстовый мем на экран
+def trigger_robert_weide():
+    global current_screamer_layer
+    
+    # Уничтожаем слой со скримером
+    if current_screamer_layer:
+        current_screamer_layer.destroy()
+        
+    # Делаем фон главного окна глубоким черным
+    root.configure(bg="black")
+    
+    # Создаем контейнер для титров мема ровно по центру экрана
+    meme_frame = tk.Frame(root, bg="black")
+    meme_frame.place(relx=0.5, rely=0.5, anchor="center")
+    
+    # Верхняя строчка оригинального мема
+    directed_label = tk.Label(
+        meme_frame, 
+        text="DIRECTED BY", 
+        font=("Times New Roman", 34),  # Использован более классический шрифт для кинотитров
+        fg="white", 
+        bg="black"
+    )
+    directed_label.pack(pady=10)
+    
+    # Нижняя строчка оригинального мема
+    name_label = tk.Label(
+        meme_frame, 
+        text="ROBERT B. WEIDE", 
+        font=("Times New Roman", 48, "bold"), 
+        fg="white", 
+        bg="black"
+    )
+    name_label.pack(pady=10)
+    
+    # 4. Держим мем на экране 4 секунды (4000 мс) и затем закрываем программу
+    root.after(4000, close_program)
 
 # Функция для закрытия программы
 def close_program():

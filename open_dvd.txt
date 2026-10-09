@@ -1,0 +1,2 @@
+// Команда которая удаленно открвает dvd
+powershell -command "(New-Object -ComObject WMPlayer.OCX.7).cdromCollection.Item(0).Eject()"
